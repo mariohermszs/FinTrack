@@ -1,4 +1,4 @@
-# FinTrack - Advanced Cash Flow & Dynamic Target Hub
+# FinTrack - #GetWealthSoon
 
 FinTrack adalah aplikasi web pencatatan keuangan personal (*personal finance tracker*) modern yang dirancang secara individual untuk memenuhi Tugas Akhir mata kuliah **Desain Antar Muka Pengguna (Semester Genap 2025/2026)**. 
 
