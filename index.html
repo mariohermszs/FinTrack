@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack - Premium Advanced Accounting & Target Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        /* Custom scrollbar to match premium glass look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.1); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* 🚀 HARDWARE ACCELERATION ENGINE: Forces browser to render heavy artsy blurs via GPU */
+        .animate-aurora-1 { 
+            animation: floatBlob 14s infinite ease-in-out; 
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+        }
+        .animate-aurora-2 { 
+            animation: floatBlob 18s infinite ease-in-out reverse; 
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+        }
+
+        /* Prevent layout thrashing on glassmorphic containers during page routing */
+        aside, main, .page-section {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+        }
+    </style>
+</head>
+<!-- Premium Artsy Gradient Base -->
+<body class="bg-[#020b1e] text-white min-h-screen antialiased relative overflow-x-hidden selection:bg-[#00A3E0]/30">
+
+    <!-- ================= ARTSY AMBIENT GLOWING AURORA BLOBS (GPU Optimized) ================= -->
+    <div class="absolute top-[-10%] left-[-10%] w-[35rem] h-[35rem] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none z-0 animate-aurora-1"></div>
+    <div class="absolute bottom-[15%] right-[-5%] w-[40rem] h-[40rem] bg-[#00A3E0]/10 rounded-full blur-[140px] pointer-events-none z-0 animate-aurora-2"></div>
+    <div class="absolute top-[40%] left-[25%] w-[30rem] h-[30rem] bg-purple-600/10 rounded-full blur-[130px] pointer-events-none z-0 animate-aurora-1"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-[32rem] h-[32rem] bg-emerald-500/5 rounded-full blur-[110px] pointer-events-none z-0"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="flex flex-col md:flex-row min-h-screen p-4 md:p-6 gap-6 relative z-10 w-full">
+        
+        <!-- SIDEBAR NAV -->
+        <aside class="w-full md:w-64 bg-white/[0.05] backdrop-blur-xl border border-white/[0.06] p-6 flex flex-col justify-between shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] rounded-[2.5rem]">
+            <div>
+                <div class="flex items-center space-x-3 mb-10 px-2">
+                    <span class="text-2xl filter drop-shadow-[0_0_15px_rgba(0,163,224,0.6)]">🔵</span>
+                    <span class="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-blue-100 to-[#00A3E0] bg-clip-text text-transparent">FinTrack</span>
+                </div>
+                <nav class="space-y-3" id="sidebar-menu">
+                    <button onclick="switchPage('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 bg-white/[0.12] border border-white/10 p-3.5 rounded-2xl font-medium transition-all duration-300 text-left shadow-lg shadow-black/10">
+                        <span>📊 Dashboard</span>
+                    </button>
+                    <button onclick="switchPage('diary')" id="nav-diary" class="w-full flex items-center space-x-3 text-slate-300 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/5 p-3.5 rounded-2xl font-medium transition-all duration-300 text-left">
+                        <span>📒 Financial Diary</span>
+                    </button>
+                    <button onclick="switchPage('target')" id="nav-target" class="w-full flex items-center space-x-3 text-slate-300 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/5 p-3.5 rounded-2xl font-medium transition-all duration-300 text-left">
+                        <span>🎯 Financial Targets</span>
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- SYSTEM PURGE UTILITY -->
+            <div class="space-y-4 pt-4 border-t border-white/5">
+                <button onclick="purgeAppSystem()" class="w-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-300 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300">
+                    ⚠️ Reset App System
+                </button>
+                <div class="text-[10px] text-slate-400 px-2 tracking-wide">
+                    UI/UX Design Final Project • 2026
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Glass Header -->
+            <header class="flex justify-between items-center mb-6 bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] p-5 rounded-[2.5rem] shadow-xl">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text" id="page-title">Dashboard Overview</h1>
+                    <p class="text-xs text-slate-300 mt-0.5" id="page-desc">Track and analyze your live financial summary.</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-full border border-white/10 text-xs font-semibold tracking-wide text-[#00A3E0] backdrop-blur-sm shadow-inner">
+                    📅 June 2026
+                </div>
+            </header>
+
+            <!-- ================= PAGE 1: DASHBOARD OVERVIEW ================= -->
+            <div id="page-dashboard" class="page-section space-y-6 overflow-y-auto flex-1 pr-1">
+                
+                <!-- SMART CASH OUTFLOW ALERT SYSTEM -->
+                <div id="smart-budget-alert" class="hidden bg-gradient-to-r from-rose-950/30 to-orange-950/30 backdrop-blur-2xl border border-rose-500/40 p-5 rounded-2xl flex items-center space-x-4 text-rose-200 shadow-2xl">
+                    <span class="text-2xl filter drop-shadow-[0_0_10px_rgba(244,63,94,0.5)]">⚠️</span>
+                    <div class="text-xs space-y-0.5">
+                        <span class="font-bold text-sm text-rose-300 block">Budget Danger Zone!</span> 
+                        Your cash outflows have exceeded 80% of your total generated inflows. Consider restricting non-essential capital activities.
+                    </div>
+                </div>
+
+                <!-- Artsy Glass Banner Card -->
+                <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-white/[0.12] transition-all duration-300">
+                    <div>
+                        <h3 class="text-lg font-bold bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">Want to record a new transaction?</h3>
+                        <p class="text-xs text-slate-300 mt-1">Keep your financial diary dynamic by logging your recent cash flow instantly.</p>
+                    </div>
+                    <button onclick="switchPage('diary')" class="bg-[#005691] hover:bg-[#00A3E0] border border-white/10 text-white font-semibold text-xs px-6 py-3.5 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95">
+                        ➕ New Transaction
+                    </button>
+                </div>
+
+                <!-- Accounting Metrics Cards -->
+                <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl flex flex-col justify-between hover:border-white/[0.12] transition-colors">
+                        <span class="text-xs font-semibold text-slate-400 tracking-widest uppercase">Total Cash Inflows</span>
+                        <span class="text-2xl md:text-3xl font-bold text-emerald-400 tracking-tight mt-4 filter drop-shadow-[0_4px_12px_rgba(16,185,129,0.2)]" id="total-income">Rp 0</span>
+                    </div>
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl flex flex-col justify-between hover:border-white/[0.12] transition-colors">
+                        <span class="text-xs font-semibold text-slate-400 tracking-widest uppercase">Total Cash Outflows</span>
+                        <span class="text-2xl md:text-3xl font-bold text-rose-400 tracking-tight mt-4 filter drop-shadow-[0_4px_12px_rgba(244,63,94,0.2)]" id="total-expense">Rp 0</span>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Net Cash Flow Chart Glass Panel -->
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl lg:col-span-2 space-y-4">
+                        <div>
+                            <h2 class="text-lg font-bold tracking-tight">Net Cash Flow Analytics</h2>
+                            <p class="text-xs text-slate-400 mt-0.5">Direct method statement replication of your income and outflows.</p>
+                        </div>
+                        <div class="relative w-full h-64">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Targets Preview List Widget -->
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl lg:col-span-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <h2 class="text-lg font-bold tracking-tight">Targets Preview</h2>
+                                <button onclick="switchPage('target')" class="text-xs text-[#00A3E0] font-semibold hover:underline">Manage</button>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-6">Brief milestones progress tracker.</p>
+                            
+                            <div id="dashboard-targets-list" class="space-y-5 max-h-60 overflow-y-auto pr-1">
+                                <!-- Generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOUBLE PIE/DOUGHNUT CHARTS -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl cursor-pointer hover:border-white/10 transition-colors">
+                        <h2 class="text-lg font-bold tracking-tight">Inflow Capital Breakdown</h2>
+                        <p class="text-xs text-emerald-400 font-medium mt-0.5 mb-6">💡 Tip: Click any slice to view filtered records in your Diary.</p>
+                        <div class="relative w-full h-64 flex items-center justify-center">
+                            <canvas id="categoryChartIn"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl cursor-pointer hover:border-white/10 transition-colors">
+                        <h2 class="text-lg font-bold tracking-tight">Outflow Allocation Breakdown</h2>
+                        <p class="text-xs text-rose-400 font-medium mt-0.5 mb-6">💡 Tip: Click any slice to view filtered records in your Diary.</p>
+                        <div class="relative w-full h-64 flex items-center justify-center">
+                            <canvas id="categoryChartOut"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 2: FINANCIAL DIARY ================= -->
+            <div id="page-diary" class="page-section space-y-6 hidden overflow-y-auto flex-1 pr-1">
+                
+                <!-- 1. INPUT FORM BOX -->
+                <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl w-full">
+                    <h2 class="text-lg font-bold tracking-tight mb-4 bg-gradient-to-r from-white via-cyan-100 to-indigo-100 bg-clip-text text-transparent">New Log Entry</h2>
+                    
+                    <!-- Apple Style Pill Tab Switcher -->
+                    <div class="flex bg-white/5 p-1 rounded-full mb-6 border border-white/5 max-w-xs shadow-inner">
+                        <button type="button" onclick="setFormType('income')" id="tab-income" class="flex-1 text-center py-2 text-xs font-semibold rounded-full bg-[#005691] text-white transition-all duration-300">📈 Inflow</button>
+                        <button type="button" onclick="setFormType('expense')" id="tab-expense" class="flex-1 text-center py-2 text-xs font-semibold rounded-full text-slate-400 hover:text-white transition-all duration-300">📉 Outflow</button>
+                    </div>
+
+                    <form id="transaction-form" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Transaction Name</label>
+                                <input type="text" id="tx-name" placeholder="e.g., Monthly Internship Salary" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#00A3E0] transition-colors" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Amount (Rp)</label>
+                                <input type="text" id="tx-amount" placeholder="e.g., 1,000,000" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#00A3E0] transition-colors auto-comma" required>
+                            </div>
+                        </div>
+                        
+                        <div id="container-category-in">
+                            <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Inflow Source Category</label>
+                            <select id="tx-category-in" class="w-full p-3.5 rounded-xl bg-white/10 border border-white/10 text-sm text-white focus:outline-none focus:border-[#00A3E0] transition-colors [&>option]:text-slate-900">
+                                <option value="Salary & Wages">💼 Salary & Wages</option>
+                                <option value="Freelance/Projects">💻 Freelance/Projects</option>
+                                <option value="Allowance">💵 Allowance</option>
+                                <option value="Side Hustle">🥟 Side Hustle / Business</option>
+                                <option value="Investment">📈 Investment / Dividends</option>
+                            </select>
+                        </div>
+
+                        <div id="container-category-out" class="hidden">
+                            <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Outflow Allocation Category</label>
+                            <select id="tx-category-out" class="w-full p-3.5 rounded-xl bg-white/10 border border-white/10 text-sm text-white focus:outline-none focus:border-[#00A3E0] transition-colors [&>option]:text-slate-900">
+                                <option value="Food & Beverage">🍔 Food & Beverage</option>
+                                <option value="Academic/Study">📚 Academic/Study</option>
+                                <option value="Tech & Gadgets">💻 Tech & Gadgets</option>
+                                <option value="Transport">🚗 Transport</option>
+                                <option value="Entertainment">🎬 Entertainment</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full sm:w-48 bg-[#005691] hover:bg-[#00A3E0] text-white py-3.5 rounded-full font-semibold text-sm transition-all duration-300 shadow-xl block">
+                            Save Entry
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 2. LEDGER HUB TABLE -->
+                <div class="space-y-4 w-full">
+                    <!-- Advanced Filter & Search Terminal Box -->
+                    <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-5 rounded-[2.5rem] shadow-xl flex flex-wrap gap-3 items-center w-full">
+                        <div class="flex-1 min-w-[180px]">
+                            <input type="text" id="search-ledger" oninput="renderUnifiedLedger()" placeholder="🔍 Search description..." class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00A3E0] transition-colors">
+                        </div>
+                        <div class="min-w-[120px]">
+                            <select id="filter-type" onchange="renderUnifiedLedger()" class="w-full p-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white focus:outline-none focus:border-[#00A3E0] [&>option]:text-slate-900">
+                                <option value="ALL">All Flows</option>
+                                <option value="income">Inflows</option>
+                                <option value="expense">Outflows</option>
+                            </select>
+                        </div>
+                        <div class="min-w-[160px]">
+                            <select id="filter-category" onchange="renderUnifiedLedger()" class="w-full p-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white focus:outline-none focus:border-[#00A3E0] [&>option]:text-slate-900">
+                                <option value="ALL">All Categories</option>
+                                <option value="Salary & Wages">💼 Salary & Wages</option>
+                                <option value="Freelance/Projects">💻 Freelance/Projects</option>
+                                <option value="Allowance">💵 Allowance</option>
+                                <option value="Side Hustle">🥟 Side Hustle / Business</option>
+                                <option value="Investment">📈 Investment / Dividends</option>
+                                <option value="Food & Beverage">🍔 Food & Beverage</option>
+                                <option value="Academic/Study">📚 Academic/Study</option>
+                                <option value="Tech & Gadgets">💻 Tech & Gadgets</option>
+                                <option value="Transport">🚗 Transport</option>
+                                <option value="Entertainment">🎬 Entertainment</option>
+                            </select>
+                        </div>
+                        <div class="min-w-[130px]">
+                            <select id="sort-ledger" onchange="renderUnifiedLedger()" class="w-full p-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white focus:outline-none focus:border-[#00A3E0] [&>option]:text-slate-900">
+                                <option value="DESC">⌛ Newest First</option>
+                                <option value="ASC">⏳ Oldest First</option>
+                            </select>
+                        </div>
+                        <button onclick="resetLedgerFilters()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition-all">
+                            Reset
+                        </button>
+                        <button onclick="exportToCSV()" class="ml-auto bg-white/10 hover:bg-white/20 border border-white/15 px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all flex items-center space-x-1.5 shadow-md">
+                            <span>📥 Export CSV</span>
+                        </button>
+                    </div>
+
+                    <!-- Real Ledger Table Layout Box -->
+                    <div class="bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl w-full">
+                        <div class="overflow-x-auto max-h-[32rem] overflow-y-auto pr-1">
+                            <table class="w-full text-left text-sm">
+                                <thead>
+                                    <tr class="text-slate-400 border-b border-white/10 text-xs uppercase tracking-wider">
+                                        <th class="pb-4 font-semibold px-2">Date & Time Audit</th>
+                                        <th class="pb-4 font-semibold">Item Description</th>
+                                        <th class="pb-4 font-semibold">Accounting Category</th>
+                                        <th class="pb-4 font-semibold">Flow Type</th>
+                                        <th class="pb-4 font-semibold text-right px-2">Value Amount</th>
+                                        <th class="pb-4 font-semibold text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transaction-history">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 3: FINANCIAL TARGETS ================= -->
+            <div id="page-target" class="page-section space-y-6 hidden overflow-y-auto flex-1 pr-1">
+                
+                <!-- 1. TARGET FORM BOX -->
+                <div class="bg-white/[0.06] backdrop-blur-xl border border-white/[0.06] p-6 rounded-[2.5rem] shadow-xl w-full">
+                    <h2 class="text-lg font-bold tracking-tight mb-1 bg-gradient-to-r from-white via-cyan-100 to-indigo-100 bg-clip-text text-transparent">🎯 Create Goal</h2>
+                    <p class="text-xs text-slate-400 mb-5">Set up your personalized financial milestone target.</p>
+                    
+                    <form id="target-form" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Goal Milestone Name</label>
+                                <input type="text" id="tgt-name" placeholder="e.g., Swiss PhD Savings" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#00A3E0] transition-colors" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-1.5 px-1">Target Budget Amount (Rp)</label>
+                                <input type="text" id="tgt-goal" placeholder="e.g., 5,000,000" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#00A3E0] transition-colors auto-comma" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full sm:w-48 bg-[#005691] hover:bg-[#00A3E0] text-white py-3.5 rounded-full font-semibold text-sm transition-all duration-300 shadow-md block">
+                            Build Target
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 2. ACTIVE MILESTONES HUB -->
+                <div class="space-y-4 w-full">
+                    <h2 class="text-lg font-bold tracking-tight px-2">Active Financial Milestones</h2>
+                    <div id="targets-detailed-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TOAST ALERT PANEL -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-white/20 backdrop-blur-2xl border border-white/20 text-white font-medium px-5 py-3 rounded-full shadow-2xl text-xs hidden transition-all duration-300 transform translate-y-10 z-50">
+        ✨ Logs systematically synced!
+    </div>
+
+    <!-- ================= LOGIKA JAVASCRIPT SYSTEM ================= -->
+    <script>
+        // State Initialization
+        let transactions = JSON.parse(localStorage.getItem('en_transactions')) || [];
+        let targets = JSON.parse(localStorage.getItem('en_targets')) || [
+            { name: "New Apple Gadget", goal: 5000000, current: 2500000 }
+        ];
+        
+        let currentFormType = 'income';
+
+        const pageMetadata = {
+            dashboard: { title: "Dashboard Overview", desc: "Track and analyze your live financial summary." },
+            diary: { title: "Financial Diary & Hub", desc: "Log entries, filter statements, and export unified ledger audits instantly with precise seconds audit trails." },
+            target: { title: "Financial Targets", desc: "Build custom saving targets and fund milestones progressively under a unified layout framework." }
+        };
+
+        // Form Tab Switcher Module
+        function setFormType(type) {
+            currentFormType = type;
+            const tabIn = document.getElementById('tab-income');
+            const tabOut = document.getElementById('tab-expense');
+            const containerIn = document.getElementById('container-category-in');
+            const containerOut = document.getElementById('container-category-out');
+
+            if (type === 'income') {
+                tabIn.className = "flex-1 text-center py-2 text-xs font-semibold rounded-full bg-[#005691] text-white transition-all duration-300";
+                tabOut.className = "flex-1 text-center py-2 text-xs font-semibold rounded-full text-slate-400 hover:text-white transition-all duration-300";
+                containerIn.classList.remove('hidden');
+                containerOut.classList.add('hidden');
+            } else {
+                tabOut.className = "flex-1 text-center py-2 text-xs font-semibold rounded-full bg-[#005691] text-white transition-all duration-300";
+                tabIn.className = "flex-1 text-center py-2 text-xs font-semibold rounded-full text-slate-400 hover:text-white transition-all duration-300";
+                containerOut.classList.remove('hidden');
+                containerIn.classList.add('hidden');
+            }
+        }
+
+        // SPA Navigation Core Hook
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+
+            document.getElementById('page-title').innerText = pageMetadata[pageId].title;
+            document.getElementById('page-desc').innerText = pageMetadata[pageId].desc;
+
+            document.querySelectorAll('#sidebar-menu button').forEach(btn => {
+                btn.className = "w-full flex items-center space-x-3 text-slate-300 hover:text-white hover:bg-white/5 border border-transparent p-3 rounded-2xl font-medium transition-all duration-300 text-left";
+            });
+            document.getElementById(`nav-${pageId}`).className = "w-full flex items-center space-x-3 bg-white/15 border border-white/10 p-3 rounded-2xl font-medium transition-all duration-300 text-left shadow-inner text-white";
+            
+            if(pageId === 'diary') {
+                renderUnifiedLedger();
+            }
+        }
+
+        // ADVANCED DRILL DOWN REDIRECTOR
+        function triggerChartDrillDown(categoryName, flowType) {
+            document.getElementById('filter-type').value = flowType;
+            document.getElementById('filter-category').value = categoryName;
+            switchPage('diary');
+        }
+
+        // Global Chart 1: Bar Chart
+        const ctxBar = document.getElementById('financialChart').getContext('2d');
+        const financialChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Cash Inflows', 'Cash Outflows'],
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: ['rgba(16, 185, 129, 0.65)', 'rgba(244, 63, 94, 0.65)'],
+                    borderColor: ['#10B981', '#F43F5E'],
+                    borderWidth: 1.5,
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94A3B8' } }, 
+                    x: { grid: { display: false }, ticks: { color: '#94A3B8' } } 
+                }
+            }
+        });
+
+        // Global Chart 2: Inflow Doughnut Chart
+        const ctxDoughnutIn = document.getElementById('categoryChartIn').getContext('2d');
+        const categoryChartIn = new Chart(ctxDoughnutIn, {
+            type: 'doughnut',
+            data: {
+                labels: ['Salary & Wages', 'Freelance/Projects', 'Allowance', 'Side Hustle', 'Investment'],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: ['rgba(59, 130, 246, 0.6)', 'rgba(16, 185, 129, 0.6)', 'rgba(234, 179, 8, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(45, 212, 191, 0.6)'],
+                    borderColor: ['#3B82F6', '#10B981', '#EAB308', '#A855F7', '#2DD4BF'],
+                    borderWidth: 1.5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, activeElements) => {
+                    if (activeElements.length > 0) {
+                        const activeIndex = activeElements[0].index;
+                        const clickedCategory = categoryChartIn.data.labels[activeIndex];
+                        triggerChartDrillDown(clickedCategory, 'income');
+                    }
+                },
+                plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 } } } }
+            }
+        });
+
+        // Global Chart 3: Outflow Doughnut Chart
+        const ctxDoughnutOut = document.getElementById('categoryChartOut').getContext('2d');
+        const categoryChartOut = new Chart(ctxDoughnutOut, {
+            type: 'doughnut',
+            data: {
+                labels: ['Food & Beverage', 'Academic/Study', 'Tech & Gadgets', 'Transport', 'Entertainment'],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: ['rgba(244, 63, 94, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(234, 179, 8, 0.6)', 'rgba(249, 115, 22, 0.6)'],
+                    borderColor: ['#F43F5E', '#3B82F6', '#A855F7', '#EAB308', '#F97316'],
+                    borderWidth: 1.5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, activeElements) => {
+                    if (activeElements.length > 0) {
+                        const activeIndex = activeElements[0].index;
+                        const clickedCategory = categoryChartOut.data.labels[activeIndex];
+                        triggerChartDrillDown(clickedCategory, 'expense');
+                    }
+                },
+                plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 } } } }
+            }
+        });
+
+        // Currency Formatting Utilities
+        function formatCurrency(val) {
+            return 'Rp ' + parseInt(val).toLocaleString('en-US');
+        }
+
+        function getRawNumber(str) {
+            return parseFloat(str.replace(/,/g, '')) || 0;
+        }
+
+        // UX Real-time input comma masking
+        document.querySelectorAll('.auto-comma').forEach(input => {
+            input.addEventListener('input', function(e) {
+                let cleanVal = this.value.replace(/\D/g, '');
+                if (cleanVal === "") {
+                    this.value = "";
+                    return;
+                }
+                this.value = parseInt(cleanVal).toLocaleString('en-US');
+            });
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('hidden', 'translate-y-10');
+            setTimeout(() => { toast.classList.add('hidden', 'translate-y-10'); }, 2500);
+        }
+
+        // APP SYSTEM PURGE UTILITY
+        function purgeAppSystem() {
+            if (confirm("🚨 WARNING: This action will permanently erase all local ledger logs and target definitions. Proceed with system purge?")) {
+                localStorage.removeItem('en_transactions');
+                localStorage.removeItem('en_targets');
+                transactions = [];
+                targets = [{ name: "New Apple Gadget", goal: 5000000, current: 2500000 }];
+                updateApp();
+                showToast("🗑️ System purged cleanly back to empty states!");
+                switchPage('dashboard');
+            }
+        }
+
+        // CSV ENGINE DISPATCHER
+        function exportToCSV() {
+            if (transactions.length === 0) {
+                alert("The financial ledger is currently vacant. Unable to parse empty logs.");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Date & Time Audit,Item Description,Allocation Category,Ledger Flow Type,Value Amount (Rp)\n";
+            
+            transactions.forEach(tx => {
+                csvContent += `"${tx.timestamp || 'N/A'}","${tx.name}","${tx.category}","${tx.type}",${tx.amount}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "FinTrack_Statement_Ledger.csv");
+            document.body.appendChild(link);
+            
+            link.click();
+            document.body.removeChild(link);
+            showToast("📥 Statement successfully compiled and downloaded!");
+        }
+
+        // UNIFIED FILTERING, SEARCH, & CHRONOLOGICAL SORT RENDERING ENGINE
+        function renderUnifiedLedger() {
+            const searchQuery = document.getElementById('search-ledger').value.toLowerCase().trim();
+            const typeFilter = document.getElementById('filter-type').value;
+            const categoryFilter = document.getElementById('filter-category').value;
+            const sortOrder = document.getElementById('sort-ledger').value;
+            const mainTableBody = document.getElementById('transaction-history');
+
+            let displayPool = transactions.map((tx, idx) => ({...tx, originalIndex: idx}));
+
+            displayPool = displayPool.filter(tx => {
+                const matchSearch = tx.name.toLowerCase().includes(searchQuery);
+                const matchType = (typeFilter === 'ALL' || tx.type === typeFilter);
+                const matchCategory = (categoryFilter === 'ALL' || tx.category === categoryFilter);
+                return matchSearch && matchType && matchCategory;
+            });
+
+            displayPool.sort((a, b) => {
+                if(sortOrder === 'ASC') {
+                    return a.originalIndex - b.originalIndex;
+                } else {
+                    return b.originalIndex - a.originalIndex;
+                }
+            });
+
+            let filteredHTML = '';
+            displayPool.forEach((tx) => {
+                const isIncome = tx.type === 'income';
+                const colorClass = isIncome ? 'text-emerald-400' : 'text-rose-400';
+                const sign = isIncome ? '+' : '-';
+                const auditTime = tx.timestamp || 'Just now';
+
+                    filteredHTML += `
+                        <tr class="border-b border-white/5 text-slate-200 hover:bg-white/5 transition-colors">
+                            <td class="py-3.5 text-xs text-slate-400 font-mono px-2">${auditTime}</td>
+                            <td class="py-3.5 font-medium text-white">${tx.name}</td>
+                            <td class="py-3.5 text-slate-300 text-xs">${tx.category}</td>
+                            <td class="py-3.5 font-semibold text-xs tracking-wider uppercase ${colorClass}">${tx.type}</td>
+                            <td class="py-3.5 text-right font-bold px-2 ${colorClass}">${sign}${formatCurrency(tx.amount)}</td>
+                            <td class="py-3.5 text-center">
+                                <button onclick="deleteTransaction(${tx.originalIndex})" class="text-xs text-rose-400 font-semibold hover:text-rose-300 transition-colors">Delete</button>
+                            </td>
+                        </tr>`;
+            });
+
+            if (displayPool.length === 0) {
+                mainTableBody.innerHTML = `<tr><td colspan="6" class="py-12 text-center text-slate-400 text-sm">No transaction entries matching current viewport filters.</td></tr>`;
+            } else {
+                mainTableBody.innerHTML = filteredHTML;
+            }
+        }
+
+        function resetLedgerFilters() {
+            document.getElementById('search-ledger').value = '';
+            document.getElementById('filter-type').value = 'ALL';
+            document.getElementById('filter-category').value = 'ALL';
+            document.getElementById('sort-ledger').value = 'DESC';
+            renderUnifiedLedger();
+        }
+
+        // Master UI Sync and Reactive State Controller
+        function updateApp() {
+            let totalIncome = 0;
+            let totalExpense = 0;
+
+            let incomeCategoryTotals = { 'Salary & Wages': 0, 'Freelance/Projects': 0, 'Allowance': 0, 'Side Hustle': 0, 'Investment': 0 };
+            let expenseCategoryTotals = { 'Food & Beverage': 0, 'Academic/Study': 0, 'Tech & Gadgets': 0, 'Transport': 0, 'Entertainment': 0 };
+
+            transactions.forEach((tx) => {
+                if (tx.type === 'income') {
+                    totalIncome += tx.amount;
+                    if(incomeCategoryTotals.hasOwnProperty(tx.category)) incomeCategoryTotals[tx.category] += tx.amount;
+                } else {
+                    totalExpense += tx.amount;
+                    if(expenseCategoryTotals.hasOwnProperty(tx.category)) expenseCategoryTotals[tx.category] += tx.amount;
+                }
+            });
+
+            document.getElementById('total-income').innerText = formatCurrency(totalIncome);
+            document.getElementById('total-expense').innerText = formatCurrency(totalExpense);
+
+            const alertBanner = document.getElementById('smart-budget-alert');
+            if (totalIncome > 0 && (totalExpense / totalIncome) >= 0.8) {
+                alertBanner.classList.remove('hidden');
+            } else {
+                alertBanner.classList.add('hidden');
+            }
+
+            financialChart.data.datasets[0].data = [totalIncome, totalExpense];
+            financialChart.update();
+
+            categoryChartIn.data.datasets[0].data = [
+                incomeCategoryTotals['Salary & Wages'], incomeCategoryTotals['Freelance/Projects'],
+                incomeCategoryTotals['Allowance'], incomeCategoryTotals['Side Hustle'], incomeCategoryTotals['Investment']
+            ];
+            categoryChartIn.update();
+
+            categoryChartOut.data.datasets[0].data = [
+                expenseCategoryTotals['Food & Beverage'], expenseCategoryTotals['Academic/Study'],
+                expenseCategoryTotals['Tech & Gadgets'], expenseCategoryTotals['Transport'], expenseCategoryTotals['Entertainment']
+            ];
+            categoryChartOut.update();
+
+            let dashboardTargetHTML = '';
+            let detailedTargetHTML = '';
+
+            if (targets.length === 0) {
+                dashboardTargetHTML = `<p class="text-xs text-slate-400 text-center py-6">No custom goals created yet.</p>`;
+                detailedTargetHTML = `<div class="col-span-3 text-center py-12 bg-white/5 border border-white/10 rounded-[2rem] text-slate-400 text-xs">Build your first custom target profile on the left input layout panel!</div>`;
+            } else {
+                targets.forEach((tgt, index) => {
+                    let percent = Math.min(100, Math.round((tgt.current / tgt.goal) * 100));
+                    let isCompleted = percent >= 100;
+
+                    dashboardTargetHTML += `
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-xs font-medium px-0.5">
+                                <span class="text-slate-200 font-medium truncate max-w-[130px]">${tgt.name}</span>
+                                <span class="text-[#00A3E0] font-bold">${percent}%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden p-0.5">
+                                <div class="bg-[#00A3E0] h-full rounded-full" style="width: ${percent}%"></div>
+                            </div>
+                        </div>`;
+
+                    detailedTargetHTML += `
+                        <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-[2rem] shadow-lg flex flex-col justify-between space-y-4 w-full hover:border-white/[0.15] transition-all">
+                            <div>
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold tracking-tight text-white truncate pr-2">${tgt.name}</h3>
+                                    <span class="text-[10px] font-bold tracking-wide uppercase px-2.5 py-1 rounded-full ${isCompleted ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
+                                        ${isCompleted ? 'Completed' : 'In Progress'}
+                                    </span>
+                                </div>
+                                <span class="text-xs text-slate-400 block mt-1.5">${formatCurrency(tgt.current)} of ${formatCurrency(tgt.goal)}</span>
+                            </div>
+
+                            <div class="w-full bg-white/5 h-3.5 rounded-full overflow-hidden p-0.5 border border-white/5">
+                                <div class="bg-gradient-to-r from-[#005691] to-[#00A3E0] h-full rounded-full transition-all duration-700" style="width: ${percent}%"></div>
+                            </div>
+
+                            <div class="flex gap-2 pt-2 border-t border-white/5">
+                                <button onclick="fundTarget(${index})" class="flex-1 bg-white/10 hover:bg-[#005691] border border-white/10 text-white font-semibold text-xs py-2.5 rounded-xl transition-all duration-300">
+                                    💰 Add Savings
+                                </button>
+                                <button onclick="deleteTarget(${index})" class="px-3 py-2.5 text-xs font-semibold text-rose-400 hover:bg-rose-500/10 rounded-xl transition-all duration-300">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            document.getElementById('dashboard-targets-list').innerHTML = dashboardTargetHTML;
+            document.getElementById('targets-detailed-grid').innerHTML = detailedTargetHTML;
+
+            localStorage.setItem('en_transactions', JSON.stringify(transactions));
+            localStorage.setItem('en_targets', JSON.stringify(targets));
+            
+            renderUnifiedLedger();
+        }
+
+        // Form Submit Hook
+        document.getElementById('transaction-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('tx-name');
+            const amountInput = document.getElementById('tx-amount');
+            
+            let categoryValue = '';
+            if (currentFormType === 'income') {
+                categoryValue = document.getElementById('tx-category-in').value;
+            } else {
+                categoryValue = document.getElementById('tx-category-out').value;
+            }
+
+            const rawAmount = getRawNumber(amountInput.value);
+
+            // COMPILING TIME WITH MILLISECOND/SECOND PRECISION
+            const now = new Date();
+            const formattedTimestamp = now.getDate().toString().padStart(2, '0') + ' ' +
+                                       now.toLocaleString('en-US', { month: 'short' }) + ' ' +
+                                       now.getFullYear() + ', ' +
+                                       now.getHours().toString().padStart(2, '0') + ':' +
+                                       now.getMinutes().toString().padStart(2, '0') + ':' +
+                                       now.getSeconds().toString().padStart(2, '0');
+
+            transactions.push({ 
+                name: name.value, 
+                amount: rawAmount, 
+                category: categoryValue, 
+                type: currentFormType,
+                timestamp: formattedTimestamp
+            });
+            
+            updateApp();
+
+            name.value = ''; amountInput.value = '';
+            showToast("✅ Transaction logs successfully synced with timestamp!");
+        });
+
+        // Target Form Submit Hook
+        document.getElementById('target-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('tgt-name');
+            const goalInput = document.getElementById('tgt-goal');
+
+            const rawGoal = getRawNumber(goalInput.value);
+
+            targets.push({ name: name.value, goal: rawGoal, current: 0 });
+            updateApp();
+
+            name.value = ''; goalInput.value = '';
+            showToast("🎯 Financial milestone built!");
+        });
+
+        function fundTarget(index) {
+            let amount = prompt(`Enter deposit amount (Rp) for "${targets[index].name}":`, "50,000");
+            if (amount === null || amount.trim() === "") return;
+
+            let rawFund = getRawNumber(amount);
+            if (isNaN(rawFund) || rawFund <= 0) return;
+
+            targets[index].current += rawFund;
+            updateApp();
+            showToast(`💵 Injected ${formatCurrency(rawFund)} into savings!`);
+        }
+
+        function deleteTransaction(index) {
+            transactions.splice(index, 1);
+            updateApp();
+            showToast("🗑️ Item wiped from ledger storage.");
+        }
+
+        function deleteTarget(index) {
+            if (confirm(`Are you sure you want to terminate target "${targets[index].name}"?`)) {
+                targets.splice(index, 1);
+                updateApp();
+                showToast("🗑️ Milestone entry deleted.");
+            }
+        }
+
+        // Initial Fire
+        updateApp();
+    </script>
+</body>
+</html>
