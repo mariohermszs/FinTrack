@@ -5,8 +5,8 @@ FinTrack adalah aplikasi web pencatatan keuangan personal (*personal finance tra
 Aplikasi ini berhasil mengintegrasikan prinsip akuntansi formal (Laporan Arus Kas Metode Langsung / *Direct Method Cash Flow Statement*) ke dalam sebuah antarmuka intuitif beraliran **Apple Liquid Glass UI (Glassmorphism)** yang sangat *user-friendly* bagi masyarakat awam.
 
 ## Tautan Aplikasi & Repositori
-* **Live Website Deployment:** [TEMPEL_LINK_VERCEL_ATAU_NETLIFY_KAMU_DI_SINI]
-* **GitHub Repository URL:** [TEMPEL_LINK_REPO_GITHUB_KAMU_DI_SINI]
+* **Live Website Deployment:** https://fin-track-five-rho.vercel.app
+* **GitHub Repository URL:** https://github.com/mariohermszs/FinTrack/
 
 ---
 
